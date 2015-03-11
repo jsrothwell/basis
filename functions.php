@@ -46,7 +46,7 @@ function basis_setup() {
 	 *
 	 * @link http://codex.wordpress.org/Function_Reference/add_theme_support#Post_Thumbnails
 	 */
-	//add_theme_support( 'post-thumbnails' );
+	add_theme_support( 'post-thumbnails' );
 
 	// This theme uses wp_nav_menu() in one location.
 	register_nav_menus( array(
@@ -101,6 +101,8 @@ add_action( 'widgets_init', 'basis_widgets_init' );
  */
 function basis_scripts() {
 	wp_enqueue_style( 'basis-style', get_stylesheet_uri() );
+    // Main Style
+    wp_enqueue_style( 'northwest-style',  get_stylesheet_directory_uri() . '/css/style-min.css' );
 
 	wp_enqueue_script( 'basis-navigation', get_template_directory_uri() . '/js/navigation.js', array(), '20120206', true );
 
@@ -136,3 +138,57 @@ require get_template_directory() . '/inc/customizer.php';
  * Load Jetpack compatibility file.
  */
 require get_template_directory() . '/inc/jetpack.php';
+
+/**
+ * Extend the user contact methods to include Twitter, Facebook and Google+
+ *
+ * @since basis 1.0
+ *
+ * @param array List of user contact methods
+ * @return array The filtered list of updated user contact methods
+ */
+function basis_new_contactmethods( $contactmethods ) {
+	// Add Twitter
+	$contactmethods['twitter'] = 'Twitter';
+
+	//add Facebook
+	$contactmethods['facebook'] = 'Facebook';
+
+	//add Google Plus
+	$contactmethods['googleplus'] = 'Google+';
+
+	return $contactmethods;
+}
+add_filter( 'user_contactmethods', 'basis_new_contactmethods', 10, 1 );
+
+
+
+
+/**
+ * Extend Customizer Features
+ *
+ * @since basis 1.0
+ *
+ */
+function basis_customizer( $wp_customize ) {
+
+	// add "Content Options" section
+	$wp_customize->add_section( 'basis_content_options_section' , array(
+		'title'      => __( 'Content Options', 'basis' ),
+		'priority'   => 100,
+	) );
+	
+	// add setting for page comment toggle checkbox
+	$wp_customize->add_setting( 'basis_page_comment_toggle', array( 
+		'default' => 1 
+	) );
+	
+	// add control for page comment toggle checkbox
+	$wp_customize->add_control( 'basis_page_comment_toggle', array(
+		'label'     => __( 'Show comments on pages?', 'basis' ),
+		'section'   => 'basis_content_options_section',
+		'priority'  => 10,
+		'type'      => 'checkbox'
+	) );
+}
+add_action( 'customize_register', 'basis_customizer' );
