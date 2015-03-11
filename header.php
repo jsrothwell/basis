@@ -23,7 +23,13 @@
 	<a class="skip-link screen-reader-text" href="#content"><?php _e( 'Skip to content', 'basis' ); ?></a>
 
 	<header id="masthead" class="site-header col s12" role="banner">
-   
+            <!--?php 
+        $tw= get_theme_mod('twitter');
+        echo("Tweety: ".$tw);  // test only
+
+        $fb= get_theme_mod('facebook');
+        echo("FB: ".$fb);  // test only
+    ?-->
 		<div class="site-branding">
 			<h1 class="site-title"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></h1>
 			<h2 class="site-description"><?php bloginfo( 'description' ); ?></h2>

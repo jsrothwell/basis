@@ -103,7 +103,9 @@ function basis_scripts() {
 	wp_enqueue_style( 'basis-style', get_stylesheet_uri() );
     // Main Style
     wp_enqueue_style( 'northwest-style',  get_stylesheet_directory_uri() . '/css/style-min.css' );
-
+    wp_enqueue_style( 'basis-fonts', basis_fonts_url(), array(), '1.0.0' );     
+    // Social icons style	
+    wp_enqueue_style( 'basis-icons', get_template_directory_uri() . '/css/typicons.css', array(), '1.0.0' );
 	wp_enqueue_script( 'basis-navigation', get_template_directory_uri() . '/js/navigation.js', array(), '20120206', true );
 
 	wp_enqueue_script( 'basis-skip-link-focus-fix', get_template_directory_uri() . '/js/skip-link-focus-fix.js', array(), '20130115', true );
@@ -113,6 +115,28 @@ function basis_scripts() {
 	}
 }
 add_action( 'wp_enqueue_scripts', 'basis_scripts' );
+
+
+// Add tyles the visual editor to resemble the theme style.
+	add_editor_style( array( 'css/editor-style.css', basis_fonts_url() ) );
+
+/**
+ * Register Google fonts.
+ *
+ */
+function basis_fonts_url() {
+	$font_url = '';
+	/*
+	 * Translators: If there are characters in your language that are not supported
+	 * by chosen font(s), translate this to 'off'. Do not translate into your own language.
+	 */
+	if ( 'off' !== _x( 'on', 'Google font: on or off', 'basis' ) ) {
+		$font_url = add_query_arg( 'family', urlencode( 'Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900,900italic&subset=latin,cyrillic-ext,greek-ext,greek,vietnamese,latin-ext,cyrillic' ), "//fonts.googleapis.com/css" );
+	}
+
+	return $font_url;
+}
+
 
 /**
  * Implement the Custom Header feature.
